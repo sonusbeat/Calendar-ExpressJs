@@ -1,0 +1,15 @@
+{
+  "name": "calendar-backend",
+  "version": "1.0.0",
+  "description": "Backend con NodeJs para ser consumido por React",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "start": "node index.js"
+  },
+  "author": "Daniel González Briseño",
+  "license": "ISC",
+  "dependencies": {
+    "nodemon": "^2.0.7"
+  }
+}
