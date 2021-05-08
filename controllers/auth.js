@@ -1,16 +1,22 @@
 const { response } = require("express");
+const { validationResult } = require("express-validator");
 
-const crearUsuario = (request, response = response) => {
+const crearUsuario = (request, res = response) => {
   const { name, email, password } = request.body;
 
-  if ( name.length < 3 ) {
-    return response.status(400).json({
+  // Manejo de errores
+
+  const errors = validationResult( request );
+
+  if( !errors.isEmpty() ) {
+    return res.status(400).json({
       ok: false,
-      msg: "El nombre debe ser mayor a 2 caracteres",
+      errors: errors.mapped(),
     });
   }
 
-  response.json({
+  // Si no hay errores proceder con el registro
+  res.status(201).json({
     ok: true,
     msg: "register",
     name,
@@ -20,10 +26,21 @@ const crearUsuario = (request, response = response) => {
 };
 
 
-const loginUsuario = (request, response = response) => {
+const loginUsuario = (request, res = response) => {
   const { email, password } = request.body;
 
-  response.json({
+  // Manejo de errores
+  const errors = validationResult( request );
+
+  if( !errors.isEmpty() ) {
+    return res.status(400).json({
+      ok: false,
+      errors: errors.mapped(),
+    });
+  }
+
+  // Si no hay errores proceder con el login
+  res.status(201).json({
     ok: true,
     msg: "login",
     email,
@@ -31,8 +48,8 @@ const loginUsuario = (request, response = response) => {
   });
 };
 
-const revalidarToken = (request, response = response) => {
-  response.json({
+const revalidarToken = (request, res = response) => {
+  res.json({
     ok: true,
     msg: "renew"
   });
