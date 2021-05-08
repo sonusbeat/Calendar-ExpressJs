@@ -2,11 +2,23 @@ const { response } = require("express");
 const User = require("../models/User");
 
 const crearUsuario = async (request, res = response) => {
-  // const { name, email, password } = request.body;
+  const { email } = request.body;
 
   try {
-    // Crear una instancia nueva
-    const user = new User( request.body );
+
+    // Buscar un usuario con el siguiente email
+    let user = await User.findOne({ email: email });
+
+    // Si existe el usuario retorna un mensaje de error.
+    if ( user ) {
+      return res.status(400).json({
+        ok: false,
+        msg: `Un usuario ya utilizó <${ email }>, ¡ Elija otro !`,
+      });
+    }
+
+    // Crear una instancia nueva y rescribir la variable user
+    user = new User( request.body );
 
     // Guardar usuario en la base de datos
     await user.save();
@@ -14,7 +26,8 @@ const crearUsuario = async (request, res = response) => {
     // Si no hay errores proceder con el registro
     res.status(201).json({
       ok: true,
-      msg: "Usuario creado",
+      uid: user.id,
+      name: user.name
     });
   } catch (error) {
     console.log(error);
