@@ -13,6 +13,7 @@ const crearUsuario = (request, res = response) => {
   });
 };
 
+// mongodb+srv://mern_user:lt71nvbZAIcUf9fM@cluster0.dy55l.mongodb.net
 
 const loginUsuario = (request, res = response) => {
   const { email, password } = request.body;
