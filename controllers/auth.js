@@ -1,19 +1,30 @@
 const { response } = require("express");
+const User = require("../models/User");
 
-const crearUsuario = (request, res = response) => {
-  const { name, email, password } = request.body;
+const crearUsuario = async (request, res = response) => {
+  // const { name, email, password } = request.body;
 
-  // Si no hay errores proceder con el registro
-  res.status(201).json({
-    ok: true,
-    msg: "register",
-    name,
-    email,
-    password
-  });
+  try {
+    // Crear una instancia nueva
+    const user = new User( request.body );
+
+    // Guardar usuario en la base de datos
+    await user.save();
+
+    // Si no hay errores proceder con el registro
+    res.status(201).json({
+      ok: true,
+      msg: "Usuario creado",
+    });
+  } catch (error) {
+    console.log(error);
+
+    res.status(500).json({
+      ok: false,
+      msg: "No se pudo crear el usuario."
+    });
+  }
 };
-
-// mongodb+srv://mern_user:lt71nvbZAIcUf9fM@cluster0.dy55l.mongodb.net
 
 const loginUsuario = (request, res = response) => {
   const { email, password } = request.body;
