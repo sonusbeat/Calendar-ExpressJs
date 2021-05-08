@@ -44,16 +44,48 @@ const crearUsuario = async (request, res = response) => {
   }
 };
 
-const loginUsuario = (request, res = response) => {
+const loginUsuario = async (request, res = response) => {
   const { email, password } = request.body;
 
-  // Si no hay errores proceder con el login
-  res.status(201).json({
-    ok: true,
-    msg: "login",
-    email,
-    password
-  });
+  try {
+
+    // Buscar el usuario en la base de datos con el email
+    const user = await User.findOne({ email });
+
+    if ( !user ) {
+      return res.status(400).json({
+        ok: false,
+        msg: "El usuario no existe con el email administrado",
+      });
+    }
+
+    // Confirmar passwords
+    // Comparar el password de base de datos con el administrado por el ui
+    const validPassword = bcrypt.compareSync( password, user.password )
+
+    if ( !validPassword ) {
+      return res.status(400).json({
+        ok: false,
+        msg: "Contraseña no válida"
+      });
+    }
+
+    // Generar el token con JWT (json web token)
+
+    res.json({
+      ok: true,
+      uid: user.id,
+      name: user.name,
+      _token: "token iria aqui"
+    });
+
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      ok: false,
+      msg: "Errores encontrados, pongase en contacto con el administrador del sistema"
+    });
+  }
 };
 
 const revalidarToken = (request, res = response) => {
