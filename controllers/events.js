@@ -8,6 +8,10 @@ const getEvents = (request, res = response) => {
 };
 
 const createEvent = (request, res = response) => {
+
+  // Verificar que tenga el evento
+  console.log(request.body);
+
   res.status(200).json({
     ok: true,
     mgs: "Evento Creado"
