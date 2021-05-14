@@ -15,7 +15,7 @@ const crearUsuario = async (request, res = response) => {
     if ( user ) {
       return res.status(400).json({
         ok: false,
-        msg: `Un usuario ya utilizó <${ email }>, ¡ Elija otro !`,
+        msg: `El email: ${ email } ya fue utilizado,<br>¡ Elija otro !`,
       });
     }
 
@@ -107,7 +107,9 @@ const revalidarToken = async (request, res = response) => {
 
   res.json({
     ok: true,
-    token
+    uid,
+    name,
+    token,
   });
 
 };

@@ -1,6 +1,6 @@
 {
   "name": "calendar-backend",
-  "version": "2.6.0",
+  "version": "3.0.0",
   "description": "Backend con NodeJs para ser consumido por React",
   "main": "index.js",
   "scripts": {
